@@ -11,3 +11,8 @@ wheels/
 
 # password, keys or secrets
 .env
+
+# this is for tests only
+calculator/
+tests.py
+
