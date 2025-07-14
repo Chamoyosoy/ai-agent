@@ -5,19 +5,25 @@ from google import genai
 from google.genai import types
 
 def main():
+    # loads environment variables from a .env
     load_dotenv()
 
+    # check if --verbose is use
     verbose = "--verbose" in sys.argv
+    # save system args if not have "--" flag
     args = [arg for arg in sys.argv[1:] if not arg.startswith("--")]
 
+    # check and teach te correct usage
     if not args:
         print("AI Code Assistant")
         print('\nUsage: python main.py "your prompt here" [--verbose]')
         print('Example: python main.py "How do I build a calculator app?"')
         sys.exit(1)
     
+    # join the prompt in a sigle str cause normally is saved as a list of words(strs)
     user_prompt = " ".join(args)
 
+    # save the apikey and the chosed client to use
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
 
