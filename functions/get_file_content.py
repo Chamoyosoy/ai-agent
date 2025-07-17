@@ -2,7 +2,9 @@ import os
 from config import MAX_CHARS
 
 def get_file_content(working_directory, file_path):
+    # get absolute path form a relative path
     abs_working_dir = os.path.abspath(working_directory)
+    # join the paths togheter
     abs_file_path = target_dir = os.path.abspath(os.path.join(working_directory, file_path))
         
     # validate it stays within the working directory boundaries
@@ -13,11 +15,15 @@ def get_file_content(working_directory, file_path):
         return f'Error: File not found or is not a regular file: "{file_path}"'
     
     try:
+        # open the file as a file
         with open(target_dir, "r") as f:
+            # save with a limit of chars
             file_content = f.read(MAX_CHARS)
-            if os.path.getsize(abs_file_path):
+            # if the file has more than the limit add a str indicated at the end
+            if os.path.getsize(abs_file_path) > MAX_CHARS:
                 file_content += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
+        # return the file content as a text with the limit
         return file_content
-        
+    # if something goes wrong return a error
     except Exception as e:
         return f"Error accesing file: {e}"
