@@ -13,18 +13,34 @@ def run_python_file(working_directory, file_path, args=None):
     # validate if exist the file
     if not os.path.exists(abs_file_path):
         return f'Error: File "{file_path}" not found.'
-    
+    # validate if the file is a python file
     if not abs_file_path.endswith(".py"):
         return f'Error: "{file_path}" is not a Python file.'
     
     try:
-        process = subprocess.run(['python3', abs_file_path], cwd=abs_working_dir, capture_output=True, timeout=30)
-        print(f'STDOUT: {process.stdout.decode("utf-8")}')
-        print(f'STDERR: {process.stderr.decode("utf-8")}')
-        if not process.returncode == None:
-            return f'Process exited with code "{process.returncode}"'
-        if process.stdout == "":
-            return 'No output produced'
+        commands = ["python3", abs_file_path]
+        if args:
+            commands.extend(args)
+
+        process = subprocess.run(
+            commands,
+            cwd=abs_working_dir,
+            capture_output=True,
+            timeout=30,
+            text=True,
+            )
         
+        output = []
+
+        if process.stdout:
+            output.append(f'STDOUT:\n{process.stdout}')
+        if process.stderr:
+            output.append(f'STDERR:\n{process.stderr}')
+
+
+        if process.returncode != 0:
+            output.append(f'Process exited with code {process.returncode}')
+        
+        return "\n".join(output) if output else "No output produced."
     except Exception as e:
         return f"Error: executing Python file: {e}"
