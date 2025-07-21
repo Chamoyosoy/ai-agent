@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from prompts import system_prompt
+from call_function import available_functions
 
 def main():
     # loads environment variables from a .env
@@ -36,14 +38,24 @@ def main():
 
     generate(client, prompt, verbose)
 
+
 def generate(client, prompt, verbose):
+
     response = client.models.generate_content(
-    model='gemini-2.0-flash-001', contents=prompt
+    model='gemini-2.0-flash-001',
+    contents=prompt,
+    config=types.GenerateContentConfig(
+    tools=[available_functions], system_instruction=system_prompt
+        ),
     )
 
-    print("Response: ")
-    print(response.text)
+    # if not function is calling return only a response
+    if not response.function_calls:
+        return response.text
 
+    # to all function calling print the function retrun
+    for function_call_part in response.function_calls:
+        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
 
     if verbose:
         metadata = response.usage_metadata
