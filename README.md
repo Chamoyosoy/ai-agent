@@ -1,6 +1,6 @@
 # AI Code Assistant
 This description was created by the program itself, is a tests of the program, and this add a explanation of the example files xd, but works ok with simple tasks like a documentation.
-i dont know enough englih so the comments can have a lot of orthography and grammatical erros, maybe i should ask to this program to add comments itself xd.  Human out. 
+i dont know enough english so the comments can have a lot of orthography and grammatical erros, maybe i should ask to this program to add comments itself xd.  Human out. 
 
 This project is an AI code assistant that leverages the Gemini API to generate code based on user prompts. It can also call functions to perform specific tasks within the codebase.
 
